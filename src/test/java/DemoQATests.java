@@ -3,29 +3,36 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.*;
 
 public class DemoQATests {
 
     @BeforeAll
     static void beforeAll() {
         Configuration.browserSize = "1920x1080";
+        Configuration.baseUrl = "https://demoqa.com";
+        Configuration.pageLoadStrategy = "eager";
     }
 
     @Test
     void  fillFormTest() {
 
-        open( "https://demoqa.com/text-box");
+        open( "/text-box");
         $("#userName").setValue("Artyom");
         $("#userEmail").setValue("a.churkin@informer.com");
         $("#currentAddress").setValue("Some street 1");
         $("#permanentAddress").setValue("Another street 1");
         $("#submit").click();
 
+        $("#output").$("#name").shouldHave(text("Artyom"));
+        $("#output").$("#email").shouldHave(text("a.churkin@informer.com"));
+        $("#output").$("#currentAddress").shouldHave(text("Some street 1"));
+        $("#output").$("#permanentAddress").shouldHave(text("Another street 1"));
 
-
-
+        sleep(10000L);
     }
+
+
 
 }
